@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Leaderboard</title>
+    <style>
+      body {
+        background-color: #b3e5fc;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        text-align: center;
+      }
+      h1 {
+        color: #01579b;
+        font-size: 36px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      table {
+        width: 60%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: #81d4fa;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border: 2px solid #0288d1;
+        font-size: 20px;
+      }
+      th {
+        background-color: #0277bd;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #b3e5fc;
+      }
+      tr:nth-child(odd) {
+        background-color: #4fc3f7;
+      }
+      tr:hover {
+        background-color: #29b6f6;
+        transform: scale(1.02);
+        transition: 0.3s ease-in-out;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🏆 Quiz Leaderboard 🏆</h1>
+    <table>
+      <tr>
+        <th>🏅 Rank</th>
+        <th>👧🏻 Username 🧒🏻</th>
+        <th>⭐ Score</th>
+      </tr>
+      {% for user in leaderboard %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.score }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
