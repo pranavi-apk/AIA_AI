@@ -15,7 +15,8 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///leaderboard.db'
+# Use PostgreSQL URL from environment variable if available, fallback to SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///leaderboard.db')
 db.init_app(app)
 
 with app.app_context():
@@ -105,4 +106,5 @@ def quiz_result():
     return {'message': 'Score updated successfully'}
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5002) 
+    port = int(os.environ.get('PORT', 5002))
+    app.run(host='0.0.0.0', port=port) 
