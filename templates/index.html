@@ -496,177 +496,175 @@
     </div>
 
     <script>
-      // Create twinkling stars
-      function createStars() {
-        const container = document.getElementById("stars-container");
-        for (let i = 0; i < 50; i++) {
-          const star = document.createElement("div");
-          star.className = "star";
-          star.style.width = Math.random() * 3 + "px";
-          star.style.height = star.style.width;
-          star.style.left = Math.random() * 100 + "vw";
-          star.style.top = Math.random() * 100 + "vh";
-          star.style.animationDelay = Math.random() * 2 + "s";
-          container.appendChild(star);
-        }
-      }
-
-      createStars();
-
-      const dragArea = document.querySelector(".drag-area");
-      const fileInput = document.querySelector("#file-input");
-      const preview = document.querySelector("#preview");
-      const previewImage = document.querySelector("#preview-image");
-      const result = document.querySelector("#result");
-      const predictionText = document.querySelector("#prediction-text");
-      const confidenceText = document.querySelector("#confidence-text");
-      const errorDiv = document.querySelector("#error");
-      const loading = document.querySelector("#loading");
-      const funMessage = document.querySelector("#fun-message");
-
-      const funMessages = {
-        male: [
-          "Houston, we've found a boy! 👨‍🚀",
-          "Blast off! It's a space cadet! 🚀",
-          "One small step for AI, one giant leap for boyhood! 🌟",
-        ],
-        female: [
-          "Star commander girl detected! 👩‍🚀",
-          "A future astronaut princess! ⭐",
-          "Space queen spotted! 🌠",
-        ],
-      };
-
-      ["dragenter", "dragover"].forEach((eventName) => {
-        dragArea.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          dragArea.classList.add("active");
-        });
-      });
-
-      ["dragleave", "drop"].forEach((eventName) => {
-        dragArea.addEventListener(eventName, (e) => {
-          e.preventDefault();
-          dragArea.classList.remove("active");
-        });
-      });
-
-      dragArea.addEventListener("drop", (e) => {
-        e.preventDefault();
-        const file = e.dataTransfer.files[0];
-        handleFile(file);
-      });
-
-      fileInput.addEventListener("change", () => {
-        const file = fileInput.files[0];
-        handleFile(file);
-      });
-
-      // Game state
-      let gameState = {
-        score: 0,
-        streak: 0,
-        rank: "Cadet",
-        badges: {
-          first: false,
-          streak: false,
-          master: false,
-          speed: false,
-        },
-        startTime: null,
-      };
-
-      const ranks = [
-        { score: 0, name: "Cadet" },
-        { score: 50, name: "Explorer" },
-        { score: 100, name: "Commander" },
-        { score: 200, name: "Captain" },
-        { score: 500, name: "Admiral" },
-      ];
-
-      function updateScore(points) {
-        gameState.score += points;
-        document.getElementById("score").textContent = gameState.score;
-
-        // Update rank
-        for (let i = ranks.length - 1; i >= 0; i--) {
-          if (gameState.score >= ranks[i].score) {
-            const newRank = ranks[i].name;
-            if (newRank !== gameState.rank) {
-              gameState.rank = newRank;
-              document.getElementById("rank").textContent = newRank;
-              showAchievement(`Promoted to ${newRank}! 🎉`);
+            // Create twinkling stars
+            function createStars() {
+              const container = document.getElementById("stars-container");
+              for (let i = 0; i < 50; i++) {
+                const star = document.createElement("div");
+                star.className = "star";
+                star.style.width = Math.random() * 3 + "px";
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + "vw";
+                star.style.top = Math.random() * 100 + "vh";
+                star.style.animationDelay = Math.random() * 2 + "s";
+                container.appendChild(star);
+              }
             }
-            break;
-          }
-        }
-      }
 
-      function updateStreak(success) {
-        if (success) {
-          gameState.streak++;
-          if (gameState.streak === 5 && !gameState.badges.streak) {
-            gameState.badges.streak = true;
-            document.getElementById("badge-streak").classList.remove("locked");
-            showAchievement("New Badge: Streak Master! ⚡");
-          }
-        } else {
-          gameState.streak = 0;
-        }
-        document.getElementById(
-          "streak"
-        ).textContent = `🔥 ${gameState.streak}`;
-      }
+            createStars();
 
-      function showAchievement(message) {
-        const achievement = document.getElementById("achievement");
-        achievement.textContent = message;
-        achievement.classList.add("show");
-        setTimeout(() => {
-          achievement.classList.remove("show");
-        }, 3000);
-      }
+            const dragArea = document.querySelector(".drag-area");
+            const fileInput = document.querySelector("#file-input");
+            const preview = document.querySelector("#preview");
+            const previewImage = document.querySelector("#preview-image");
+            const result = document.querySelector("#result");
+            const predictionText = document.querySelector("#prediction-text");
+            const confidenceText = document.querySelector("#confidence-text");
+            const errorDiv = document.querySelector("#error");
+            const loading = document.querySelector("#loading");
+            const funMessage = document.querySelector("#fun-message");
 
-      function handleFile(file) {
-        if (file && file.type.startsWith("image/")) {
-          gameState.startTime = Date.now();
-          const reader = new FileReader();
-          reader.onload = () => {
-            previewImage.src = reader.result;
-            preview.classList.remove("hidden");
-            loading.style.display = "block";
-            uploadFile(file);
-          };
-          reader.readAsDataURL(file);
-        } else {
-          showError("Oops! Our space scanner only works with pictures! 📸");
-        }
-      }
+            const funMessages = {
+              male: [
+                "Houston, we've found a boy! 👨‍🚀",
+                "Blast off! It's a space cadet! 🚀",
+                "One small step for AI, one giant leap for boyhood! 🌟",
+              ],
+              female: [
+                "Star commander girl detected! 👩‍🚀",
+                "A future astronaut princess! ⭐",
+                "Space queen spotted! 🌠",
+              ],
+            };
 
-      // Quiz Questions
-      const quizQuestions = [
+            ["dragenter", "dragover"].forEach((eventName) => {
+              dragArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dragArea.classList.add("active");
+              });
+            });
+
+            ["dragleave", "drop"].forEach((eventName) => {
+              dragArea.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dragArea.classList.remove("active");
+              });
+            });
+
+            dragArea.addEventListener("drop", (e) => {
+              e.preventDefault();
+              const file = e.dataTransfer.files[0];
+              handleFile(file);
+            });
+
+            fileInput.addEventListener("change", () => {
+              const file = fileInput.files[0];
+              handleFile(file);
+            });
+
+            // Game state
+            let gameState = {
+              score: 0,
+              streak: 0,
+              rank: "Cadet",
+              badges: {
+                first: false,
+                streak: false,
+                master: false,
+                speed: false,
+              },
+              startTime: null,
+            };
+
+            const ranks = [
+              { score: 0, name: "Cadet" },
+              { score: 50, name: "Explorer" },
+              { score: 100, name: "Commander" },
+              { score: 200, name: "Captain" },
+              { score: 500, name: "Admiral" },
+            ];
+
+            function updateScore(points) {
+              gameState.score += points;
+              document.getElementById("score").textContent = gameState.score;
+
+              // Update rank
+              for (let i = ranks.length - 1; i >= 0; i--) {
+                if (gameState.score >= ranks[i].score) {
+                  const newRank = ranks[i].name;
+                  if (newRank !== gameState.rank) {
+                    gameState.rank = newRank;
+                    document.getElementById("rank").textContent = newRank;
+                    showAchievement(`Promoted to ${newRank}! 🎉`);
+                  }
+                  break;
+                }
+              }
+            }
+
+            function updateStreak(success) {
+              if (success) {
+                gameState.streak++;
+                if (gameState.streak === 5 && !gameState.badges.streak) {
+                  gameState.badges.streak = true;
+                  document.getElementById("badge-streak").classList.remove("locked");
+                  showAchievement("New Badge: Streak Master! ⚡");
+                }
+              } else {
+                gameState.streak = 0;
+              }
+              document.getElementById(
+                "streak"
+              ).textContent = `🔥 ${gameState.streak}`;
+            }
+
+            function showAchievement(message) {
+              const achievement = document.getElementById("achievement");
+              achievement.textContent = message;
+              achievement.classList.add("show");
+              setTimeout(() => {
+                achievement.classList.remove("show");
+              }, 3000);
+            }
+
+            function handleFile(file) {
+              if (file && file.type.startsWith("image/")) {
+                gameState.startTime = Date.now();
+                const reader = new FileReader();
+                reader.onload = () => {
+                  previewImage.src = reader.result;
+                  preview.classList.remove("hidden");
+                  loading.style.display = "block";
+                  uploadFile(file);
+                };
+                reader.readAsDataURL(file);
+              } else {
+                showError("Oops! Our space scanner only works with pictures! 📸");
+              }
+            }
+
+            // Quiz Questions
+            const quizQuestions = [
+              // Python Questions
+              const quizQuestions = [
         // Python Questions
         {
-          question:
-            "What will print('Hello' + ' ' + 'World') show in Python? 💻",
+          question: "What will print('Hello' + ' ' + 'World') show in Python? 💻",
           options: ["HelloWorld", "Hello World", "Error", "Nothing"],
           correct: 1,
-          explanation:
-            "The + operator joins (concatenates) strings together in Python!",
+          explanation: "The + operator joins (concatenates) strings together in Python!",
         },
         {
           question: "Which Python operator finds the remainder? 🔢",
           options: ["/", "%", "#", "$"],
           correct: 1,
-          explanation:
-            "The % (modulo) operator finds the remainder after division!",
+          explanation: "The % (modulo) operator finds the remainder after division!",
         },
         {
           question: "What does len('Space') return in Python? 🚀",
           options: ["4", "5", "6", "Error"],
           correct: 1,
-          explanation:
-            "len() counts the number of characters - 'Space' has 5 letters!",
+          explanation: "len() counts the number of characters - 'Space' has 5 letters!",
         },
         {
           question: "In Python, what is the result of 3 * 'Hey'? 🎮",
@@ -678,8 +676,7 @@
           question: "What type is the value True in Python? 🤔",
           options: ["text", "number", "boolean", "none"],
           correct: 2,
-          explanation:
-            "True is a boolean value - it can only be True or False!",
+          explanation: "True is a boolean value - it can only be True or False!",
         },
         {
           question: "How do you create a list in Python? 📝",
@@ -691,8 +688,7 @@
           question: "What does range(3) create in Python? 🔄",
           options: ["1,2,3", "0,1,2", "1,2", "0,1,2,3"],
           correct: 1,
-          explanation:
-            "range(3) creates numbers from 0 to 2 (3 numbers total)!",
+          explanation: "range(3) creates numbers from 0 to 2 (3 numbers total)!",
         },
         {
           question: "Which is the correct way to comment in Python? 💭",
@@ -710,8 +706,7 @@
           question: "How do you check if 5 is equal to '5' in Python? 🤔",
           options: ["5 = '5'", "5 == '5'", "5 === '5'", "5 equals '5'"],
           correct: 1,
-          explanation:
-            "== checks if values are equal, but 5 and '5' are different types!",
+          explanation: "== checks if values are equal, but 5 and '5' are different types!",
         },
         {
           question: "What happens if you add 5 + True in Python? 🎲",
@@ -733,22 +728,15 @@
         },
         {
           question: "How do you check if 'a' is in 'space'? 🔍",
-          options: [
-            "'a' inside 'space'",
-            "'a' contains 'space'",
-            "'a' in 'space'",
-            "contains('a', 'space')",
-          ],
+          options: ["'a' inside 'space'", "'a' contains 'space'", "'a' in 'space'", "contains('a', 'space')"],
           correct: 2,
-          explanation:
-            "The 'in' keyword checks if something is inside a string or list!",
+          explanation: "The 'in' keyword checks if something is inside a string or list!",
         },
         {
           question: "What is the value of 10 / 2 in Python? ➗",
           options: ["5.0", "5", "2.5", "Error"],
           correct: 0,
-          explanation:
-            "Division always returns a float (decimal) number in Python!",
+          explanation: "Division always returns a float (decimal) number in Python!",
         },
         {
           question: "Which finds the smallest number in a list? 📊",
@@ -758,23 +746,13 @@
         },
         {
           question: "What does str(123) do in Python? 🔄",
-          options: [
-            "Makes 123 stronger",
-            "Converts 123 to text",
-            "Counts to 123",
-            "Error",
-          ],
+          options: ["Makes 123 stronger", "Converts 123 to text", "Counts to 123", "Error"],
           correct: 1,
           explanation: "str() converts numbers into text (string) format!",
         },
         {
           question: "How do you join two lists in Python? ➕",
-          options: [
-            "list1 + list2",
-            "list1 & list2",
-            "join(list1, list2)",
-            "list1.add(list2)",
-          ],
+          options: ["list1 + list2", "list1 & list2", "join(list1, list2)", "list1.add(list2)"],
           correct: 0,
           explanation: "The + operator combines two lists into one!",
         },
@@ -788,115 +766,7 @@
           question: "How do you get the first item in list x? 📋",
           options: ["first(x)", "x.1", "x[1]", "x[0]"],
           correct: 3,
-          explanation:
-            "Lists start counting at 0, so x[0] gets the first item!",
-        },
-        {
-          question: "What type is 3.14 in Python? 🔢",
-          options: ["int", "decimal", "float", "number"],
-          correct: 2,
-          explanation:
-            "Numbers with decimal points are called float in Python!",
-        },
-        {
-          question: "How do you make a function in Python? 🛠️",
-          options: [
-            "function name():",
-            "def name():",
-            "create name():",
-            "make name():",
-          ],
-          correct: 1,
-          explanation: "Use 'def' to define a new function!",
-        },
-        {
-          question: "What does 'space'.count('a') do? 🔍",
-          options: ["Counts letters", "Counts 'a's", "Makes space", "Error"],
-          correct: 1,
-          explanation: "count() finds how many times 'a' appears in 'space'!",
-        },
-        {
-          question: "Which is correct in Python? 🎯",
-          options: ["if x = 5:", "if x == 5:", "if x === 5:", "if x equals 5:"],
-          correct: 1,
-          explanation: "Use == to check if values are equal in conditions!",
-        },
-        {
-          question: "What does list(range(2)) create? 📝",
-          options: ["[1,2]", "[0,1]", "[0,1,2]", "[1]"],
-          correct: 1,
-          explanation: "Creates a list with numbers 0 and 1!",
-        },
-        {
-          question: "How do you get the type of 5 in Python? 🤔",
-          options: ["typeof(5)", "type(5)", "5.type()", "what_is(5)"],
-          correct: 1,
-          explanation: "type() tells you what kind of value something is!",
-        },
-        {
-          question: "What is 'Hi'.lower() in Python? 📝",
-          options: ["HI", "hi", "Hi", "ERROR"],
-          correct: 1,
-          explanation: "lower() makes all letters lowercase!",
-        },
-        {
-          question: "How do you remove spaces from text ends? ✂️",
-          options: [".clean()", ".trim()", ".strip()", ".cut()"],
-          correct: 2,
-          explanation: "strip() removes spaces from both ends of text!",
-        },
-        {
-          question: "What does bool(0) return in Python? 🎲",
-          options: ["0", "1", "True", "False"],
-          correct: 3,
-          explanation: "Zero converts to False in boolean values!",
-        },
-        {
-          question: "How to check string length in Python? 📏",
-          options: [
-            "string.length",
-            "length(string)",
-            "len(string)",
-            "string.size()",
-          ],
-          correct: 2,
-          explanation: "len() tells you how many characters are in text!",
-        },
-        {
-          question: "What does max([1,5,2,8,3]) return? 🎯",
-          options: ["1", "5", "8", "3"],
-          correct: 2,
-          explanation: "max() finds the biggest number in a list!",
-        },
-        {
-          question: "How to convert '5' to a number? 🔢",
-          options: ["number('5')", "int('5')", "to_number('5')", "5()"],
-          correct: 1,
-          explanation: "int() converts text to a whole number!",
-        },
-        {
-          question: "What is 'abc'[1] in Python? 🎯",
-          options: ["a", "b", "c", "abc"],
-          correct: 1,
-          explanation:
-            "This gets the second letter because counting starts at 0!",
-        },
-        {
-          question: "How do you check if x > 5 and y < 10? 🤔",
-          options: [
-            "x > 5 && y < 10",
-            "x > 5 and y < 10",
-            "x > 5 + y < 10",
-            "and(x > 5, y < 10)",
-          ],
-          correct: 1,
-          explanation: "Use 'and' to check if both conditions are true!",
-        },
-        {
-          question: "What does sorted([3,1,4]) return? 📊",
-          options: ["[1,3,4]", "[4,3,1]", "[3,1,4]", "Error"],
-          correct: 0,
-          explanation: "sorted() arranges numbers from smallest to largest!",
+          explanation: "Lists start counting at 0, so x[0] gets the first item!",
         },
 
         // Space Science Questions
@@ -908,12 +778,7 @@
         },
         {
           question: "What causes the phases of the Moon? 🌙",
-          options: [
-            "Earth's shadow",
-            "Sun's position",
-            "Moon's rotation",
-            "Cloud cover",
-          ],
+          options: ["Earth's shadow", "Sun's position", "Moon's rotation", "Cloud cover"],
           correct: 1,
           explanation: "We see different parts of the Moon lit by the Sun!",
         },
@@ -927,8 +792,7 @@
           question: "What is a shooting star really? ⭐",
           options: ["A star", "A meteor", "A planet", "A satellite"],
           correct: 1,
-          explanation:
-            "Shooting stars are meteors burning up in our atmosphere!",
+          explanation: "Shooting stars are meteors burning up in our atmosphere!",
         },
         {
           question: "What is the Sun made of? 🌞",
@@ -944,12 +808,7 @@
         },
         {
           question: "What causes day and night? 🌓",
-          options: [
-            "Moon rotation",
-            "Earth's orbit",
-            "Earth's rotation",
-            "Sun's movement",
-          ],
+          options: ["Moon rotation", "Earth's orbit", "Earth's rotation", "Sun's movement"],
           correct: 2,
           explanation: "Earth spinning on its axis causes day and night!",
         },
@@ -957,8 +816,7 @@
           question: "What is the Milky Way? 🌌",
           options: ["A star", "A planet", "A galaxy", "A nebula"],
           correct: 2,
-          explanation:
-            "The Milky Way is our home galaxy with billions of stars!",
+          explanation: "The Milky Way is our home galaxy with billions of stars!",
         },
         {
           question: "What is a black hole? 🕳️",
@@ -976,8 +834,7 @@
           question: "What color is Mars? 🔴",
           options: ["Blue", "Green", "Red", "Yellow"],
           correct: 2,
-          explanation:
-            "Mars appears red due to iron oxide (rust) on its surface!",
+          explanation: "Mars appears red due to iron oxide (rust) on its surface!",
         },
         {
           question: "What is a comet made of? ☄️",
@@ -989,29 +846,17 @@
           question: "What is the hottest planet? 🌡️",
           options: ["Mercury", "Venus", "Mars", "Jupiter"],
           correct: 1,
-          explanation:
-            "Venus is hotter than Mercury due to its thick atmosphere!",
+          explanation: "Venus is hotter than Mercury due to its thick atmosphere!",
         },
         {
           question: "What causes seasons on Earth? 🌍",
-          options: [
-            "Distance from Sun",
-            "Earth's tilt",
-            "Moon's position",
-            "Wind patterns",
-          ],
+          options: ["Distance from Sun", "Earth's tilt", "Moon's position", "Wind patterns"],
           correct: 1,
-          explanation:
-            "Earth's tilted axis causes seasons as we orbit the Sun!",
+          explanation: "Earth's tilted axis causes seasons as we orbit the Sun!",
         },
         {
           question: "What is a nebula? 🌌",
-          options: [
-            "Dead star",
-            "Cloud of gas",
-            "Type of planet",
-            "Small moon",
-          ],
+          options: ["Dead star", "Cloud of gas", "Type of planet", "Small moon"],
           correct: 1,
           explanation: "A nebula is a giant cloud of gas and dust in space!",
         },
@@ -1029,15 +874,9 @@
         },
         {
           question: "What causes solar eclipses? 🌑",
-          options: [
-            "Earth's shadow",
-            "Moon's shadow",
-            "Sun's rotation",
-            "Clouds",
-          ],
+          options: ["Earth's shadow", "Moon's shadow", "Sun's rotation", "Clouds"],
           correct: 1,
-          explanation:
-            "The Moon blocks our view of the Sun during a solar eclipse!",
+          explanation: "The Moon blocks our view of the Sun during a solar eclipse!",
         },
         {
           question: "What is the Sun's core temperature? 🌡️",
@@ -1051,510 +890,518 @@
           correct: 1,
           explanation: "Saturn is famous for its beautiful ring system!",
         },
+
+        // Earth Science Questions
         {
-          question: "What is a constellation? ⭐",
-          options: [
-            "Star cluster",
-            "Star pattern",
-            "Galaxy type",
-            "Planet group",
-          ],
-          correct: 1,
-          explanation: "Constellations are patterns of stars in the night sky!",
-        },
-        {
-          question: "What causes tides on Earth? 🌊",
-          options: ["Wind", "Moon's gravity", "Sun's heat", "Earth's rotation"],
-          correct: 1,
-          explanation: "The Moon's gravity pulls on Earth's oceans!",
-        },
-        {
-          question: "What is the aurora borealis? 🌈",
-          options: ["Solar wind", "Northern Lights", "Comet tail", "Star type"],
-          correct: 1,
-          explanation: "The Northern Lights are caused by solar particles!",
-        },
-        {
-          question: "What is a dwarf planet? 🌍",
-          options: ["Small moon", "Tiny star", "Mini planet", "Large asteroid"],
+          question: "What is the Earth's outer layer called? 🌍",
+          options: ["Core", "Mantle", "Crust", "Magma"],
           correct: 2,
-          explanation: "A dwarf planet is smaller than regular planets!",
+          explanation: "The Earth's crust is the outermost solid layer!",
         },
         {
-          question: "What is the biggest moon? 🌙",
-          options: ["Titan", "Europa", "Ganymede", "Io"],
-          correct: 2,
-          explanation:
-            "Ganymede, Jupiter's moon, is the largest in our solar system!",
+          question: "How is a tornado formed? 🌪️",
+          options: ["By earthquakes", "By hot and cold air mixing", "By volcanoes", "By the ocean"],
+          correct: 1,
+          explanation: "Tornadoes form when warm and cool air mix violently!",
         },
         {
-          question: "What is a meteorite? ☄️",
-          options: [
-            "Space rock on Earth",
-            "Falling star",
-            "Comet piece",
-            "Moon rock",
-          ],
+          question: "What is the Earth's crust made of? 🌍",
+          options: ["Water and air", "Rocks and minerals", "Lava and fire", "Sand and soil"],
+          correct: 1,
+          explanation: "The crust is made of rocks and minerals!",
+        },
+        {
+          question: "What is a fruit battery? 🍋",
+          options: ["A battery made from fruits", "A type of fruit", "A toy", "A kind of rock"],
           correct: 0,
-          explanation: "A meteorite is a space rock that lands on Earth!",
+          explanation: "A fruit battery uses fruit to generate electricity!",
         },
         {
-          question: "What causes Mars' red color? 🔴",
-          options: ["Heat", "Rust", "Reflection", "Atmosphere"],
+          question: "What is the shape of the Earth? 🌍",
+          options: ["Flat", "Round like a ball", "Square", "Triangular"],
           correct: 1,
-          explanation: "Iron oxide (rust) makes Mars appear red!",
+          explanation: "The Earth is an oblate spheroid (round like a ball)!",
         },
         {
-          question: "What is the coldest planet? ❄️",
-          options: ["Neptune", "Uranus", "Pluto", "Mars"],
+          question: "What is the name of the layer of air around the Earth? 🌬️",
+          options: ["Hydrosphere", "Atmosphere", "Lithosphere", "Biosphere"],
+          correct: 1,
+          explanation: "The atmosphere is the layer of air around the Earth!",
+        },
+        {
+          question: "What is the largest ocean on Earth? 🌊",
+          options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+          correct: 3,
+          explanation: "The Pacific Ocean is the largest ocean!",
+        },
+        {
+          question: "What is the name of the supercontinent that existed millions of years ago? 🌍",
+          options: ["Pangaea", "Gondwana", "Laurasia", "Eurasia"],
           correct: 0,
-          explanation: "Neptune is the coldest planet in our solar system!",
+          explanation: "Pangaea was the supercontinent that existed long ago!",
         },
         {
-          question: "What is a pulsar? ⚡",
-          options: ["Dead star", "Spinning star", "New star", "Exploding star"],
-          correct: 1,
-          explanation: "A pulsar is a rapidly spinning neutron star!",
-        },
-        {
-          question: "What causes meteor showers? 🌠",
-          options: ["Moon dust", "Comet debris", "Star pieces", "Planet dust"],
-          correct: 1,
-          explanation:
-            "We see meteor showers when Earth passes through comet debris!",
-        },
-        {
-          question: "What is the Sun's surface called? 🌞",
-          options: ["Corona", "Photosphere", "Atmosphere", "Core"],
-          correct: 1,
-          explanation: "The Sun's visible surface is called the photosphere!",
-        },
-        {
-          question: "What is a lunar eclipse? 🌑",
-          options: ["Moon shadow", "Earth shadow", "Sun shadow", "Star shadow"],
-          correct: 1,
-          explanation:
-            "A lunar eclipse happens when Earth's shadow falls on the Moon!",
-        },
-        {
-          question: "What is the asteroid belt? 🌠",
-          options: ["Star ring", "Rock zone", "Gas cloud", "Planet ring"],
-          correct: 1,
-          explanation:
-            "The asteroid belt is a zone of rocks between Mars and Jupiter!",
-        },
-        {
-          question: "What causes sunspots? 🌞",
-          options: [
-            "Heat spots",
-            "Magnetic fields",
-            "Gas bubbles",
-            "Surface holes",
-          ],
-          correct: 1,
-          explanation: "Sunspots are caused by intense magnetic activity!",
-        },
-        {
-          question: "What is a galaxy cluster? 🌌",
-          options: [
-            "Star group",
-            "Planet group",
-            "Galaxy group",
-            "Comet group",
-          ],
+          question: "What is the main gas in the Earth's atmosphere? 🌬️",
+          options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
           correct: 2,
-          explanation:
-            "A galaxy cluster is a group of galaxies held together by gravity!",
+          explanation: "Nitrogen makes up about 78% of the Earth's atmosphere!",
+        },
+        {
+          question: "What is the name of the process where water turns into vapor? 💧",
+          options: ["Freezing", "Melting", "Evaporation", "Condensation"],
+          correct: 2,
+          explanation: "Evaporation turns water into vapor!",
+        },
+        {
+          question: "What is the name of the Earth's solid outer layer? 🌍",
+          options: ["Core", "Mantle", "Crust", "Magma"],
+          correct: 2,
+          explanation: "The crust is the Earth's solid outer layer!",
+        },
+        {
+          question: "What is the name of the layer below the Earth's crust? 🌍",
+          options: ["Core", "Mantle", "Atmosphere", "Hydrosphere"],
+          correct: 1,
+          explanation: "The mantle is below the Earth's crust!",
+        },
+        {
+          question: "What is the name of the tool used to measure earthquakes? 📏",
+          options: ["Thermometer", "Barometer", "Seismograph", "Compass"],
+          correct: 2,
+          explanation: "A seismograph measures earthquakes!",
+        },
+        {
+          question: "What is the name of the process where rocks break down into smaller pieces? 🌍",
+          options: ["Erosion", "Weathering", "Melting", "Freezing"],
+          correct: 1,
+          explanation: "Weathering breaks rocks into smaller pieces!",
+        },
+        {
+          question: "What is the name of the Earth's hottest layer? 🌡️",
+          options: ["Crust", "Mantle", "Outer Core", "Inner Core"],
+          correct: 3,
+          explanation: "The inner core is the hottest layer of the Earth!",
+        },
+        {
+          question: "What is the name of the Earth's water layer? 💧",
+          options: ["Atmosphere", "Hydrosphere", "Lithosphere", "Biosphere"],
+          correct: 1,
+          explanation: "The hydrosphere is the Earth's water layer!",
+        },
+        {
+          question: "What is the name of the process where plants make their own food? 🌿",
+          options: ["Respiration", "Photosynthesis", "Evaporation", "Condensation"],
+          correct: 1,
+          explanation: "Photosynthesis is how plants make food!",
+        },
+        {
+          question: "What is the name of the Earth's magnetic field? 🧲",
+          options: ["Magnetosphere", "Atmosphere", "Hydrosphere", "Lithosphere"],
+          correct: 0,
+          explanation: "The magnetosphere is the Earth's magnetic field!",
+        },
+        {
+          question: "What is the name of the process where water falls from the sky as rain? 🌧️",
+          options: ["Evaporation", "Condensation", "Precipitation", "Transpiration"],
+          correct: 2,
+          explanation: "Precipitation is when water falls as rain, snow, etc.!",
+        },
+        {
+          question: "What is the name of the Earth's outermost layer? 🌍",
+          options: ["Core", "Mantle", "Crust", "Magma"],
+          correct: 2,
+          explanation: "The crust is the Earth's outermost layer!",
         },
       ];
+            ];
 
-      let quizState = {
-        currentQuestion: null,
-        startTime: null,
-        times: [],
-        correctAnswers: 0,
-        selectedOption: null,
-        timerInterval: null,
-        lastQuizTime: null,
-        speedRating: null,
-      };
+            let quizState = {
+              currentQuestion: null,
+              startTime: null,
+              times: [],
+              correctAnswers: 0,
+              selectedOption: null,
+              timerInterval: null,
+              lastQuizTime: null,
+              speedRating: null,
+            };
 
-      function getSpeedRating(time) {
-        if (time <= 5)
-          return {
-            rating: "fastest",
-            text: "Fastest Space Cadet",
-            points: 50,
-            emoji: "⚡",
-          };
-        if (time <= 10)
-          return {
-            rating: "fast",
-            text: "Quick Space Explorer",
-            points: 40,
-            emoji: "🚀",
-          };
-        if (time <= 20)
-          return {
-            rating: "average",
-            text: "Space Voyager",
-            points: 30,
-            emoji: "🌟",
-          };
-        if (time <= 30)
-          return {
-            rating: "slow",
-            text: "Space Rookie",
-            points: 20,
-            emoji: "🌠",
-          };
-        return {
-          rating: "retry",
-          text: "Space Trainee",
-          points: 10,
-          emoji: "🎯",
-        };
-      }
-
-      function showQuiz() {
-        const quizContainer = document.getElementById("quiz-container");
-        document.querySelector(".result-box").style.display = "none";
-        quizContainer.style.display = "block";
-        selectRandomQuestion();
-      }
-
-      function selectRandomQuestion() {
-        const availableQuestions = quizQuestions.filter(
-          (q) => !quizState.times.some((t) => t.question === q.question)
-        );
-
-        if (availableQuestions.length === 0) {
-          endQuiz();
-          return;
-        }
-
-        quizState.currentQuestion =
-          availableQuestions[
-            Math.floor(Math.random() * availableQuestions.length)
-          ];
-
-        document.getElementById("quiz-question").textContent =
-          quizState.currentQuestion.question;
-        const optionsContainer = document.getElementById("quiz-options");
-        optionsContainer.innerHTML = "";
-
-        quizState.currentQuestion.options.forEach((option, index) => {
-          const optionDiv = document.createElement("div");
-          optionDiv.className = "quiz-option";
-          optionDiv.textContent = option;
-          optionDiv.onclick = () => selectOption(index);
-          optionsContainer.appendChild(optionDiv);
-        });
-      }
-
-      function selectOption(index) {
-        quizState.selectedOption = index;
-        document.querySelectorAll(".quiz-option").forEach((option, i) => {
-          option.classList.toggle("selected", i === index);
-        });
-      }
-
-      function startQuizTimer() {
-        document.getElementById("start-quiz").style.display = "none";
-        document.getElementById("submit-quiz").style.display = "block";
-        quizState.startTime = Date.now();
-        quizState.timerInterval = setInterval(updateTimer, 100);
-      }
-
-      function updateTimer() {
-        const timeElapsed = (Date.now() - quizState.startTime) / 1000;
-        document.getElementById(
-          "quiz-timer"
-        ).textContent = `Time: ${timeElapsed.toFixed(1)}s`;
-      }
-
-      function submitQuizAnswer() {
-        clearInterval(quizState.timerInterval);
-        const timeTaken = (Date.now() - quizState.startTime) / 1000;
-        quizState.lastQuizTime = timeTaken;
-
-        const speedRating = getSpeedRating(timeTaken);
-        quizState.speedRating = speedRating;
-
-        const isCorrect =
-          quizState.selectedOption === quizState.currentQuestion.correct;
-        quizState.times.push({
-          question: quizState.currentQuestion.question,
-          time: timeTaken,
-          correct: isCorrect,
-        });
-
-        const speedRatingDiv = document.getElementById("speed-rating");
-        speedRatingDiv.textContent = `${speedRating.emoji} ${
-          speedRating.text
-        } - ${timeTaken.toFixed(1)}s ${speedRating.emoji}`;
-        speedRatingDiv.className = `speed-rating ${speedRating.rating}`;
-
-        if (isCorrect) {
-          quizState.correctAnswers++;
-
-          // Update streak for correct answer
-          updateStreak(true);
-
-          // Update score based on speed rating
-          updateScore(speedRating.points);
-
-          // Show achievement with speed rating
-          showAchievement(
-            `${speedRating.text}! ${quizState.currentQuestion.explanation} ⭐`
-          );
-
-          // Check for streak badge
-          if (gameState.streak >= 5 && !gameState.badges.streak) {
-            gameState.badges.streak = true;
-            document.getElementById("badge-streak").classList.remove("locked");
-            showAchievement("New Badge: Streak Master! ⚡");
-          }
-
-          // Show the photo upload section after correct answer
-          document.querySelector(".result-box").style.display = "block";
-          document.getElementById("quiz-container").style.display = "none";
-        } else {
-          // Reset streak for wrong answer
-          updateStreak(false);
-
-          showAchievement(
-            `Keep trying! ${quizState.currentQuestion.explanation} 📚`
-          );
-          // Reset for another attempt
-          document.getElementById("start-quiz").style.display = "block";
-          document.getElementById("submit-quiz").style.display = "none";
-          document.getElementById("quiz-timer").textContent = "Time: 0s";
-          selectRandomQuestion();
-        }
-      }
-
-      function endQuiz() {
-        const fastestTime = Math.min(
-          ...quizState.times.filter((t) => t.correct).map((t) => t.time)
-        );
-        const accuracy =
-          (quizState.correctAnswers / quizState.times.length) * 100;
-
-        if (accuracy >= 60) {
-          showAchievement(`Quiz Complete! You're a Space Genius! 🎓`);
-          updateScore(50);
-        }
-
-        document.getElementById("quiz-container").style.display = "none";
-      }
-
-      function resetForNextStudent() {
-        // Get the username from the input field
-        const username = document.getElementById("username").value;
-
-        // Send score to leaderboard if username is provided
-        if (username && username.trim() !== "") {
-          // Send the score to the leaderboard API
-          fetch("/quiz_result", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: username,
-              score: gameState.score,
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              console.log("Success:", data);
-              showAchievement(`${username} added to the leaderboard! 🏆`);
-
-              // Redirect to leaderboard after a short delay
-              setTimeout(() => {
-                window.location.href = "/leaderboard";
-              }, 2000);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              showAchievement("Error adding to leaderboard. Try again!");
-            });
-        } else {
-          showAchievement("Please enter your name to join the leaderboard!");
-          return; // Don't reset if no username
-        }
-
-        // Reset game state
-        gameState = {
-          score: 0,
-          streak: 0,
-          rank: "Cadet",
-          badges: {
-            first: false,
-            streak: false,
-            master: false,
-            speed: false,
-          },
-          startTime: null,
-        };
-
-        // Reset quiz state
-        quizState = {
-          currentQuestion: null,
-          startTime: null,
-          times: [],
-          correctAnswers: 0,
-          selectedOption: null,
-          timerInterval: null,
-          lastQuizTime: null,
-          speedRating: null,
-        };
-
-        // Reset UI elements
-        document.getElementById("score").textContent = "0";
-        document.getElementById("streak").textContent = "🔥 0";
-        document.getElementById("rank").textContent = "Cadet";
-        document.getElementById("speed-rating").textContent = "";
-        document.getElementById("quiz-timer").textContent = "Time: 0s";
-        document.getElementById("username").value = ""; // Clear username field
-
-        // Reset badges
-        document.querySelectorAll(".badge").forEach((badge) => {
-          badge.classList.add("locked");
-        });
-
-        // Clear preview and results
-        preview.classList.add("hidden");
-        result.classList.add("hidden");
-        previewImage.src = "";
-        document.querySelector(".fun-message").classList.remove("visible");
-
-        // Hide next button
-        document.getElementById("next-cadet").style.display = "none";
-
-        // Show quiz for next student
-        showQuiz();
-      }
-
-      // Add event listener for next cadet button
-      document
-        .getElementById("next-cadet")
-        .addEventListener("click", resetForNextStudent);
-
-      // Modify uploadFile function to show next button
-      function uploadFile(file) {
-        const formData = new FormData();
-        formData.append("file", file);
-
-        fetch("/predict", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            loading.style.display = "none";
-            if (data.error) {
-              showError(data.error);
-              updateStreak(false);
-            } else {
-              result.classList.remove("hidden");
-              const emoji = data.prediction === "Female" ? "👩‍🚀" : "👨‍🚀";
-              const predictionClass =
-                data.prediction === "Female"
-                  ? "prediction-female"
-                  : "prediction-male";
-              predictionText.className = predictionClass;
-
-              // Use the quiz performance for the title
-              const speedRating = quizState.speedRating;
-              let title = `${emoji} ${speedRating.text} ${data.prediction}`;
-              title += ` ${speedRating.emoji}`;
-
-              predictionText.textContent = title;
-              confidenceText.textContent = `Mission Time: ${quizState.lastQuizTime.toFixed(
-                1
-              )}s | Points: +${speedRating.points}! 🎯`;
-
-              // Show the next cadet button
-              document.getElementById("next-cadet").style.display = "block";
-
-              // Show fun message
-              const messages =
-                data.prediction.toLowerCase() === "female"
-                  ? funMessages.female
-                  : funMessages.male;
-              funMessage.textContent =
-                messages[Math.floor(Math.random() * messages.length)];
-              funMessage.classList.add("visible");
-
-              // Calculate total points from both quiz and photo prediction
-              const quizPoints = speedRating.points;
-              const confidencePoints = Math.round(
-                parseFloat(data.confidence) * 10
-              );
-              const totalPoints = quizPoints + confidencePoints;
-
-              // Update score with combined points
-              updateScore(totalPoints);
-
-              // Update streak for successful completion
-              updateStreak(true);
-
-              // Show achievement for points earned
-              showAchievement(`Mission Complete! +${totalPoints} Points! 🌟`);
-
-              // Handle badges
-              if (!gameState.badges.first) {
-                gameState.badges.first = true;
-                document
-                  .getElementById("badge-first")
-                  .classList.remove("locked");
-                showAchievement("First Mission Complete! 🎖️");
-              }
-
-              if (speedRating.rating === "fastest" && !gameState.badges.speed) {
-                gameState.badges.speed = true;
-                document
-                  .getElementById("badge-speed")
-                  .classList.remove("locked");
-                showAchievement("New Badge: Speed Champion! ⚡");
-              }
-
-              if (gameState.score >= 200 && !gameState.badges.master) {
-                gameState.badges.master = true;
-                document
-                  .getElementById("badge-master")
-                  .classList.remove("locked");
-                showAchievement("New Badge: Master Explorer! 👑");
-              }
-
-              errorDiv.classList.add("hidden");
+            function getSpeedRating(time) {
+              if (time <= 5)
+                return {
+                  rating: "fastest",
+                  text: "Fastest Space Cadet",
+                  points: 50,
+                  emoji: "⚡",
+                };
+              if (time <= 10)
+                return {
+                  rating: "fast",
+                  text: "Quick Space Explorer",
+                  points: 40,
+                  emoji: "🚀",
+                };
+              if (time <= 20)
+                return {
+                  rating: "average",
+                  text: "Space Voyager",
+                  points: 30,
+                  emoji: "🌟",
+                };
+              if (time <= 30)
+                return {
+                  rating: "slow",
+                  text: "Space Rookie",
+                  points: 20,
+                  emoji: "🌠",
+                };
+              return {
+                rating: "retry",
+                text: "Space Trainee",
+                points: 10,
+                emoji: "🎯",
+              };
             }
-          })
-          .catch((error) => {
-            loading.style.display = "none";
-            showError("Houston, we have a problem! 🛸 Let's try again!");
-          });
-      }
 
-      function showError(message) {
-        errorDiv.textContent = message;
-        errorDiv.classList.remove("hidden");
-        result.classList.add("hidden");
-        loading.style.display = "none";
-      }
+            function showQuiz() {
+              const quizContainer = document.getElementById("quiz-container");
+              document.querySelector(".result-box").style.display = "none";
+              quizContainer.style.display = "block";
+              selectRandomQuestion();
+            }
 
-      // Add event listeners for quiz buttons
-      document
-        .getElementById("start-quiz")
-        .addEventListener("click", startQuizTimer);
-      document
-        .getElementById("submit-quiz")
-        .addEventListener("click", submitQuizAnswer);
+            function selectRandomQuestion() {
+              const availableQuestions = quizQuestions.filter(
+                (q) => !quizState.times.some((t) => t.question === q.question)
+              );
 
-      // Start with the quiz instead of photo upload
-      showQuiz();
+              if (availableQuestions.length === 0) {
+                endQuiz();
+                return;
+              }
+
+              quizState.currentQuestion =
+                availableQuestions[
+                  Math.floor(Math.random() * availableQuestions.length)
+                ];
+
+              document.getElementById("quiz-question").textContent =
+                quizState.currentQuestion.question;
+              const optionsContainer = document.getElementById("quiz-options");
+              optionsContainer.innerHTML = "";
+
+              quizState.currentQuestion.options.forEach((option, index) => {
+                const optionDiv = document.createElement("div");
+                optionDiv.className = "quiz-option";
+                optionDiv.textContent = option;
+                optionDiv.onclick = () => selectOption(index);
+                optionsContainer.appendChild(optionDiv);
+              });
+            }
+
+            function selectOption(index) {
+              quizState.selectedOption = index;
+              document.querySelectorAll(".quiz-option").forEach((option, i) => {
+                option.classList.toggle("selected", i === index);
+              });
+            }
+
+            function startQuizTimer() {
+              document.getElementById("start-quiz").style.display = "none";
+              document.getElementById("submit-quiz").style.display = "block";
+              quizState.startTime = Date.now();
+              quizState.timerInterval = setInterval(updateTimer, 100);
+            }
+
+            function updateTimer() {
+              const timeElapsed = (Date.now() - quizState.startTime) / 1000;
+              document.getElementById(
+                "quiz-timer"
+              ).textContent = `Time: ${timeElapsed.toFixed(1)}s`;
+            }
+
+            function submitQuizAnswer() {
+              clearInterval(quizState.timerInterval);
+              const timeTaken = (Date.now() - quizState.startTime) / 1000;
+              quizState.lastQuizTime = timeTaken;
+
+              const speedRating = getSpeedRating(timeTaken);
+              quizState.speedRating = speedRating;
+
+              const isCorrect =
+                quizState.selectedOption === quizState.currentQuestion.correct;
+              quizState.times.push({
+                question: quizState.currentQuestion.question,
+                time: timeTaken,
+                correct: isCorrect,
+              });
+
+              const speedRatingDiv = document.getElementById("speed-rating");
+              speedRatingDiv.textContent = `${speedRating.emoji} ${
+                speedRating.text
+              } - ${timeTaken.toFixed(1)}s ${speedRating.emoji}`;
+              speedRatingDiv.className = `speed-rating ${speedRating.rating}`;
+
+              if (isCorrect) {
+                quizState.correctAnswers++;
+
+                // Update streak for correct answer
+                updateStreak(true);
+
+                // Update score based on speed rating
+                updateScore(speedRating.points);
+
+                // Show achievement with speed rating
+                showAchievement(
+                  `${speedRating.text}! ${quizState.currentQuestion.explanation} ⭐`
+                );
+
+                // Check for streak badge
+                if (gameState.streak >= 5 && !gameState.badges.streak) {
+                  gameState.badges.streak = true;
+                  document.getElementById("badge-streak").classList.remove("locked");
+                  showAchievement("New Badge: Streak Master! ⚡");
+                }
+
+                // Show the photo upload section after correct answer
+                document.querySelector(".result-box").style.display = "block";
+                document.getElementById("quiz-container").style.display = "none";
+              } else {
+                // Reset streak for wrong answer
+                updateStreak(false);
+
+                showAchievement(
+                  `Keep trying! ${quizState.currentQuestion.explanation} 📚`
+                );
+                // Reset for another attempt
+                document.getElementById("start-quiz").style.display = "block";
+                document.getElementById("submit-quiz").style.display = "none";
+                document.getElementById("quiz-timer").textContent = "Time: 0s";
+                selectRandomQuestion();
+              }
+            }
+
+            function endQuiz() {
+              const fastestTime = Math.min(
+                ...quizState.times.filter((t) => t.correct).map((t) => t.time)
+              );
+              const accuracy =
+                (quizState.correctAnswers / quizState.times.length) * 100;
+
+              if (accuracy >= 60) {
+                showAchievement(`Quiz Complete! You're a Space Genius! 🎓`);
+                updateScore(50);
+              }
+
+              document.getElementById("quiz-container").style.display = "none";
+            }
+
+            function resetForNextStudent() {
+              // Get the username from the input field
+              const username = document.getElementById("username").value;
+
+              // Send score to leaderboard if username is provided
+              if (username && username.trim() !== "") {
+                // Send the score to the leaderboard API
+                fetch("/quiz_result", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    username: username,
+                    score: gameState.score,
+                  }),
+                })
+                  .then((response) => response.json())
+                  .then((data) => {
+                    console.log("Success:", data);
+                    showAchievement(`${username} added to the leaderboard! 🏆`);
+
+                    // Redirect to leaderboard after a short delay
+                    setTimeout(() => {
+                      window.location.href = "/leaderboard";
+                    }, 2000);
+                  })
+                  .catch((error) => {
+                    console.error("Error:", error);
+                    showAchievement("Error adding to leaderboard. Try again!");
+                  });
+              } else {
+                showAchievement("Please enter your name to join the leaderboard!");
+                return; // Don't reset if no username
+              }
+
+              // Reset game state
+              gameState = {
+                score: 0,
+                streak: 0,
+                rank: "Cadet",
+                badges: {
+                  first: false,
+                  streak: false,
+                  master: false,
+                  speed: false,
+                },
+                startTime: null,
+              };
+
+              // Reset quiz state
+              quizState = {
+                currentQuestion: null,
+                startTime: null,
+                times: [],
+                correctAnswers: 0,
+                selectedOption: null,
+                timerInterval: null,
+                lastQuizTime: null,
+                speedRating: null,
+              };
+
+              // Reset UI elements
+              document.getElementById("score").textContent = "0";
+              document.getElementById("streak").textContent = "🔥 0";
+              document.getElementById("rank").textContent = "Cadet";
+              document.getElementById("speed-rating").textContent = "";
+              document.getElementById("quiz-timer").textContent = "Time: 0s";
+              document.getElementById("username").value = ""; // Clear username field
+
+              // Reset badges
+              document.querySelectorAll(".badge").forEach((badge) => {
+                badge.classList.add("locked");
+              });
+
+              // Clear preview and results
+              preview.classList.add("hidden");
+              result.classList.add("hidden");
+              previewImage.src = "";
+              document.querySelector(".fun-message").classList.remove("visible");
+
+              // Hide next button
+              document.getElementById("next-cadet").style.display = "none";
+
+              // Show quiz for next student
+              showQuiz();
+            }
+
+            // Add event listener for next cadet button
+            document
+              .getElementById("next-cadet")
+              .addEventListener("click", resetForNextStudent);
+
+            // Modify uploadFile function to show next button
+            function uploadFile(file) {
+              const formData = new FormData();
+              formData.append("file", file);
+
+              fetch("/predict", {
+                method: "POST",
+                body: formData,
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  loading.style.display = "none";
+                  if (data.error) {
+                    showError(data.error);
+                    updateStreak(false);
+                  } else {
+                    result.classList.remove("hidden");
+                    const emoji = data.prediction === "Female" ? "👩‍🚀" : "👨‍🚀";
+                    const predictionClass =
+                      data.prediction === "Female"
+                        ? "prediction-female"
+                        : "prediction-male";
+                    predictionText.className = predictionClass;
+
+                    // Use the quiz performance for the title
+                    const speedRating = quizState.speedRating;
+                    let title = `${emoji} ${speedRating.text} ${data.prediction}`;
+                    title += ` ${speedRating.emoji}`;
+
+                    predictionText.textContent = title;
+                    confidenceText.textContent = `Mission Time: ${quizState.lastQuizTime.toFixed(
+                      1
+                    )}s | Points: +${speedRating.points}! 🎯`;
+
+                    // Show the next cadet button
+                    document.getElementById("next-cadet").style.display = "block";
+
+                    // Show fun message
+                    const messages =
+                      data.prediction.toLowerCase() === "female"
+                        ? funMessages.female
+                        : funMessages.male;
+                    funMessage.textContent =
+                      messages[Math.floor(Math.random() * messages.length)];
+                    funMessage.classList.add("visible");
+
+                    // Calculate total points from both quiz and photo prediction
+                    const quizPoints = speedRating.points;
+                    const confidencePoints = Math.round(
+                      parseFloat(data.confidence) * 10
+                    );
+                    const totalPoints = quizPoints + confidencePoints;
+
+                    // Update score with combined points
+                    updateScore(totalPoints);
+
+                    // Update streak for successful completion
+                    updateStreak(true);
+
+                    // Show achievement for points earned
+                    showAchievement(`Mission Complete! +${totalPoints} Points! 🌟`);
+
+                    // Handle badges
+                    if (!gameState.badges.first) {
+                      gameState.badges.first = true;
+                      document
+                        .getElementById("badge-first")
+                        .classList.remove("locked");
+                      showAchievement("First Mission Complete! 🎖️");
+                    }
+
+                    if (speedRating.rating === "fastest" && !gameState.badges.speed) {
+                      gameState.badges.speed = true;
+                      document
+                        .getElementById("badge-speed")
+                        .classList.remove("locked");
+                      showAchievement("New Badge: Speed Champion! ⚡");
+                    }
+
+                    if (gameState.score >= 200 && !gameState.badges.master) {
+                      gameState.badges.master = true;
+                      document
+                        .getElementById("badge-master")
+                        .classList.remove("locked");
+                      showAchievement("New Badge: Master Explorer! 👑");
+                    }
+
+                    errorDiv.classList.add("hidden");
+                  }
+                })
+                .catch((error) => {
+                  loading.style.display = "none";
+                  showError("Houston, we have a problem! 🛸 Let's try again!");
+                });
+            }
+
+            function showError(message) {
+              errorDiv.textContent = message;
+              errorDiv.classList.remove("hidden");
+              result.classList.add("hidden");
+              loading.style.display = "none";
+            }
+
+            // Add event listeners for quiz buttons
+            document
+              .getElementById("start-quiz")
+              .addEventListener("click", startQuizTimer);
+            document
+              .getElementById("submit-quiz")
+              .addEventListener("click", submitQuizAnswer);
+
+            // Start with the quiz instead of photo upload
+            showQuiz();
     </script>
   </body>
 </html>
