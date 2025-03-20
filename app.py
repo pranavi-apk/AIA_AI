@@ -99,6 +99,16 @@ def leaderboard():
         app.logger.error(f'Error accessing leaderboard: {str(e)}')
         return render_template('leaderboard.html', leaderboard=[], error='Unable to load leaderboard data')
 
+@app.route('/clear_leaderboard', methods=['POST'])
+def clear_leaderboard():
+    try:
+        User.query.delete()
+        db.session.commit()
+        return jsonify({'message': 'Leaderboard cleared successfully'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/quiz_result', methods=['POST'])
 def quiz_result():
     data = request.get_json()
