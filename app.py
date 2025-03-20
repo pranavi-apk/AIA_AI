@@ -9,6 +9,9 @@ from models import db, User
 
 app = Flask(__name__)
 
+# Set secret key for sessions
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-key-123')
+
 # Configure upload folder
 UPLOAD_FOLDER = 'static/uploads'
 if not os.path.exists(UPLOAD_FOLDER):
@@ -89,8 +92,12 @@ def predict():
 
 @app.route('/leaderboard')
 def leaderboard():
-    users = User.query.order_by(User.score.desc()).limit(10).all()
-    return render_template('leaderboard.html', leaderboard=users)
+    try:
+        users = User.query.order_by(User.score.desc()).limit(10).all()
+        return render_template('leaderboard.html', leaderboard=users)
+    except Exception as e:
+        app.logger.error(f'Error accessing leaderboard: {str(e)}')
+        return render_template('leaderboard.html', leaderboard=[], error='Unable to load leaderboard data')
 
 @app.route('/quiz_result', methods=['POST'])
 def quiz_result():

@@ -48,6 +48,12 @@
   </head>
   <body>
     <h1>🏆 Quiz Leaderboard 🏆</h1>
+    {% if error %}
+    <div style="color: #d32f2f; background-color: #ffcdd2; padding: 15px; margin: 20px auto; width: 60%; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        {{ error }}
+    </div>
+    {% endif %}
+    {% if leaderboard %}
     <table>
       <tr>
         <th>🏅 Rank</th>
@@ -62,5 +68,12 @@
       </tr>
       {% endfor %}
     </table>
+    {% else %}
+    {% if not error %}
+    <div style="padding: 20px; color: #1976d2;">
+        No scores recorded yet. Be the first to complete the quiz!
+    </div>
+    {% endif %}
+    {% endif %}
   </body>
 </html>
